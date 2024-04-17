@@ -15,7 +15,8 @@ def generate_speech(text, language='en'):
     tts = gTTS(text, lang=language)
     filename = "response.mp3"
     tts.save(filename)
-    os.system(f"mpg123 {filename}")  # Play the audio (requires mpg123)
+    import playsound
+    playsound.playsound(filename)
 
 # Function to get chatbot response
 def get_chatbot_response(prompt):
