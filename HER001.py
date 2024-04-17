@@ -1,6 +1,3 @@
-# Install necessary libraries
-!pip install streamlit requests gtts
-
 # Import libraries
 import streamlit as st
 import requests
