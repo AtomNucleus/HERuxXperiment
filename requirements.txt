@@ -1,2 +1,2 @@
 gtts
-mpg123
+playsound
