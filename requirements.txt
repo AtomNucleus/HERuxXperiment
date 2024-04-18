@@ -1,2 +1,4 @@
+requests
 gtts
-playsound
+google-cloud-texttospeech
+mpg123  
