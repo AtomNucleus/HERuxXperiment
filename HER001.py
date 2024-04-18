@@ -73,4 +73,4 @@ if st.button("Send"):
             st.write("You:", message["content"])
         else:
             st.write("Chatbot:", message["content"])
-            generate_speech(message["content"])  # Convert response to speech
+            #generate_speech(message["content"])  # Convert response to speech
