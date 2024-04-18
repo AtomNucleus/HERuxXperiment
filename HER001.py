@@ -1,7 +1,7 @@
 # Import libraries
 import streamlit as st
 import requests
-from gtts import gTTS
+from google.cloud import texttospeech
 import os
 
 # Replace with your Deep Infra API key
@@ -10,13 +10,25 @@ api_key = "gPPAXGBqxZMWShZ1WEOTfjf0hJvCZZ5R"
 # Define API endpoint URL
 url = "https://api.deepinfra.com/v1/inference/google/gemma-7b-it"
 
-# Function to convert text to speech
-def generate_speech(text, language='en'):
-    tts = gTTS(text, lang=language)
+# Create a TTS client
+client = texttospeech.TextToSpeechClient()
+
+# Function to convert text to speech using Google Cloud TTS
+def generate_speech(text, voice_name="en-US-Wavenet-A", language_code="en-US"):
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+    voice = texttospeech.VoiceSelectionParams(
+        language_code=language_code, name=voice_name
+    )
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+    response = client.synthesize_speech(
+        input=synthesis_input, voice=voice, audio_config=audio_config
+    )
     filename = "response.mp3"
-    tts.save(filename)
-    import playsound
-    playsound.playsound(filename)
+    with open(filename, "wb") as out:
+        out.write(response.audio_content)
+        os.system(f"mpg123 {filename}")  # Or use playsound
 
 # Function to get chatbot response
 def get_chatbot_response(prompt):
@@ -62,4 +74,3 @@ if st.button("Send"):
         else:
             st.write("Chatbot:", message["content"])
             generate_speech(message["content"])  # Convert response to speech
-
